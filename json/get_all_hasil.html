@@ -1,0 +1,43 @@
+<?php
+
+
+
+$response = array();
+
+
+// include db connect class
+require_once __DIR__ . '/db_connect.php';
+
+// konekin ke db
+$db = new DB_CONNECT();
+
+
+$result1 = mysql_query("SELECT COUNT(*) as jumlah from hasil_knn where kelayakan='4'") or die(mysql_error());
+
+// cek
+if (mysql_num_rows($result) > 0) {
+    // looping hasil
+    
+    $response["hasil_knn"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        $hasil_knn = array();
+        $hasil_knn["jumlah"] = $row["jumlah"];
+        
+        
+
+        
+        array_push($response["hasil_knn"], $hasil_knn);
+    }
+    // sukses
+    $response["success"] = 1;
+
+    // echo JSON response
+    echo json_encode($response);
+} else {
+    $response["success"] = 0;
+    $response["message"] = "Tidak ada data yang ditemukan";
+
+    echo json_encode($response);
+}
+?>
